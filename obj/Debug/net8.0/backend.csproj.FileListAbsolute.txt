@@ -33,3 +33,4 @@ C:\Users\40123824\ownProjects\mintvattid\backend\obj\Debug\net8.0\refint\backend
 C:\Users\40123824\ownProjects\mintvattid\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\40123824\ownProjects\mintvattid\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\40123824\ownProjects\mintvattid\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\40123824\ownProjects\mintvattid\backend\obj\Debug\net8.0\backend.sourcelink.json
