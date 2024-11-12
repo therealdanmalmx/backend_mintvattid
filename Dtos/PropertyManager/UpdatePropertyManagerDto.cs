@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace backend.Dtos.PropertyManager
 {
@@ -15,6 +16,5 @@ namespace backend.Dtos.PropertyManager
         public string AdminName { get; set; } = "";
         public string AdminPhoneNumber { get; set; } = "";
         public string AdminEmail { get; set; } = "";
-        // public List<Property> Properties { get; set; } = new List<Property>();
     }
 }

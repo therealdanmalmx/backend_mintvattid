@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.models;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace backend.Dtos.PropertyManager
 {
@@ -16,6 +18,5 @@ namespace backend.Dtos.PropertyManager
         public string AdminPhoneNumber { get; set; } = "+46758956532";
         public string AdminEmail { get; set; } = "lena.anderssson@hsb.com";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        // public List<Property> Properties { get; set; } = new List<Property>();
     }
 }

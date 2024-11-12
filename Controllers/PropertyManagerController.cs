@@ -16,7 +16,7 @@ namespace backend.Controllers
     public class PropertyManagerController : Controller
     {
         private readonly ILogger<PropertyManagerController> _logger;
-        public IPropertyManagerService _propertyManagerService { get; }
+        public readonly IPropertyManagerService _propertyManagerService;
         public PropertyManagerController(ILogger<PropertyManagerController> logger, IPropertyManagerService propertyManagerService)
         {
             _logger = logger;

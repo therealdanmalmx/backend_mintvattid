@@ -12,7 +12,6 @@ namespace backend.Services.PropertyManagerServices
         Task<ServiceResponse<List<GetPropertyManagerDto>>> GetAllPropertyManager();
         Task<ServiceResponse<GetPropertyManagerDto>> GetPropertyManagerById(Guid id);
         Task<ServiceResponse<List<GetPropertyManagerDto>>> AddPropertyManager(AddPropertyManagerDto newPropertyManager);
-
         Task<ServiceResponse<GetPropertyManagerDto>> UpdatePropertyManager(UpdatePropertyManagerDto updatedPropertyManager);
         Task<ServiceResponse<List<GetPropertyManagerDto>>> DeletePropertyManager(Guid id);
     }

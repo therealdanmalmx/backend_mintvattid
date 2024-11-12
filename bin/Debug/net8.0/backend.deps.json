@@ -114,7 +114,7 @@
     }
   },
   "libraries": {
-    "backend/1.0.0": {
+    "Backend/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
