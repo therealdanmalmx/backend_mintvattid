@@ -20,6 +20,15 @@ namespace backend.Services.PropertyManagerServices
                 AdminName = "Albert Ygvesson",
                 AdminPhoneNumber = "+46335986532",
                 AdminEmail = "albert.ygvesson@riksbyggen.se"
+            },
+            new PropertyManager {
+                Name = "Castellum",
+                StreetName = "Grinoargatan 33",
+                City = "Borås",
+                PostalCode = "515 25",
+                AdminName = "Gunilla Svansson",
+                AdminPhoneNumber = "+46705289654",
+                AdminEmail = "gunilla.svansson@castellum.com"
             }
         };
         private readonly IMapper _mapper;
@@ -108,6 +117,26 @@ namespace backend.Services.PropertyManagerServices
             return serviceResponse;
 
         }
+
+        public async Task<ServiceResponse<List<GetPropertyManagerDto>>> DeletePropertyManager(Guid id)
+        {
+            ServiceResponse<List<GetPropertyManagerDto>> serviceResponse = new ServiceResponse<List<GetPropertyManagerDto>>();
+
+            try
+            {
+                PropertyManager propertyManager = propertyManagers.First(propertyManager => propertyManager.Id == id);
+
+                propertyManagers.Remove(propertyManager);
+                serviceResponse.Data = propertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+
+        }
     }
-    ;
 }

@@ -53,5 +53,17 @@ namespace backend.Controllers
             }
             return Ok(serviceResponse);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyManagerDto>>>> DeletePropertyManager(Guid id)
+        {
+            var serviceResponse = await _propertyManagerService.DeletePropertyManager(id);
+
+            if (serviceResponse.Data == null)
+            {
+                return NotFound(serviceResponse);
+            }
+            return serviceResponse;
+        }
     }
 }
