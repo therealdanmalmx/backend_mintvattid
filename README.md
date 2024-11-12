@@ -1,4 +1,4 @@
-# Min tvättztid
+# Min tvätttid
 ## Book your laundry room online
 - Property Managers: are assigned by a superAdmin and has the ability to add properties.
 - Property: Registering properties belonging to Property Manager. Can be done by the property manager or the superintendent with the authority of the property manager. 
