@@ -47,5 +47,11 @@ namespace backend.Controllers
         {
             return Ok(await _propertyServices.UpdateProperty(updatedProperty));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> DeleteProperty(Guid id)
+        {
+            return Ok(await _propertyServices.DeleteProperty(id));
+        }
     }
 }

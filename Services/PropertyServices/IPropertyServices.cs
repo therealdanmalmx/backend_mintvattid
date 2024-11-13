@@ -12,6 +12,7 @@ namespace backend.Services.PropertyServices
         Task<ServiceResponse<List<GetPropertyByPropertyManagerId>>> GetPropertiesPerPropertyManager(Guid id);
         Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty);
         Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty);
+        Task<ServiceResponse<List<GetPropertyDto>>> DeleteProperty(Guid id);
 
     }
 }

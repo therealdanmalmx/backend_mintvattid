@@ -113,5 +113,25 @@ namespace backend.Services.PropertyServices
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<GetPropertyDto>>> DeleteProperty(Guid id)
+        {
+            ServiceResponse<List<GetPropertyDto>> serviceResponse = new ServiceResponse<List<GetPropertyDto>>();
+
+            try
+            {
+                Property property = await _db.Properties.FirstAsync(property => property.Id == id);
+                _db.Properties.Remove(property);
+                await _db.SaveChangesAsync();
+                serviceResponse.Data = _db.Properties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
     }
 }
