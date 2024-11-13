@@ -8,7 +8,7 @@ namespace backend.models
     public class Property
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public PropertyManager PropertyManager { get; set; } = new PropertyManager { Name = "HSB" };
+        public PropertyManager PropertyManager { get; set; }
         public string PropertyName { get; set; } = "BRF Kråkan";
         public string PropertyStreet { get; set; } = "Lundagatan 20";
         public string PropertyCity { get; set; } = "Borås";

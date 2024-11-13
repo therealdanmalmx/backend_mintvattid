@@ -17,6 +17,5 @@ namespace backend.models
         public string AdminPhoneNumber { get; set; } = "+46758956532";
         public string AdminEmail { get; set; } = "lena.anderssson@hsb.com";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public List<PropertyModel> Properties { get; set; } = new List<PropertyModel>();
     }
 }

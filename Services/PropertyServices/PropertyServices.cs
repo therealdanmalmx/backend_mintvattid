@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using backend.Data;
 using backend.Dtos.Property;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.PropertyServices
 {
@@ -49,37 +51,34 @@ namespace backend.Services.PropertyServices
             }
         };
         public readonly IMapper _mapper;
+        private readonly DataContext _context;
 
-        public PropertyServices(IMapper mapper)
+        public PropertyServices(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
-
+            _context = context;
         }
 
         public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties()
         {
+            var serviceResponse = new ServiceResponse<GetPropertyDto>();
+            var dbProperty = await _context.Properties.ToListAsync();
+
             return new ServiceResponse<List<GetPropertyDto>>
             {
-                Data = properties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList()
+                Data = dbProperty.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList()
             };
         }
 
         public async Task<ServiceResponse<List<GetPropertyByPropertyManagerId>>> GetPropertiesPerPropertyManager(Guid id)
         {
-            var property = properties.FirstOrDefault(property => property.PropertyManager.Id == id);
-            if (property == null)
-            {
-                return new ServiceResponse<List<GetPropertyByPropertyManagerId>>
-                {
-                    Data = new List<GetPropertyByPropertyManagerId>()
-                };
-            }
+            var serviceResponse = new ServiceResponse<List<GetPropertyByPropertyManagerId>>();
+            var dbProperties = await _context.Properties
+            .Where(property => property.PropertyManager.Id == id)
+            .ToListAsync();
 
-            var propertyDto = _mapper.Map<GetPropertyByPropertyManagerId>(property);
-            return new ServiceResponse<List<GetPropertyByPropertyManagerId>>
-            {
-                Data = new List<GetPropertyByPropertyManagerId> { propertyDto }
-            };
+            serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerId>(properties)).ToList();
+            return serviceResponse;
         }
     }
 }

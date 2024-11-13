@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using backend.Data;
 using backend.Dtos.PropertyManager;
 using backend.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.PropertyManagerServices
 {
@@ -32,16 +34,21 @@ namespace backend.Services.PropertyManagerServices
             }
         };
         private readonly IMapper _mapper;
-        public PropertyManagerService(IMapper mapper)
+        private readonly DataContext _context;
+
+        public PropertyManagerService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ServiceResponse<List<GetPropertyManagerDto>>> GetAllPropertyManager()
         {
+            var serviceResponse = new ServiceResponse<GetPropertyManagerDto>();
+            var dbProjectManager = await _context.PropertyManagers.ToListAsync();
             return new ServiceResponse<List<GetPropertyManagerDto>>
             {
-                Data = propertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList()
+                Data = dbProjectManager.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList()
             };
         }
 
