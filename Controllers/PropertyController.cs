@@ -35,5 +35,17 @@ namespace backend.Controllers
         {
             return Ok(await _propertyServices.GetPropertiesPerPropertyManager(id));
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> AddProperty(AddPropertyDto newProperty)
+        {
+            return Ok(await _propertyServices.AddProperty(newProperty));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> UpdateProperty(UpdatedPropertyDto updatedProperty)
+        {
+            return Ok(await _propertyServices.UpdateProperty(updatedProperty));
+        }
     }
 }

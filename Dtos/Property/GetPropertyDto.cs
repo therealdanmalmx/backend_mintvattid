@@ -10,15 +10,12 @@ namespace backend.Dtos.Property
     public class GetPropertyDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string PropertyName { get; set; } = "BRF Kråkan";
-        public string PropertyStreet { get; set; } = "Lundagatan 20";
-        public string PropertyCity { get; set; } = "Borås";
-        public string PropertyPostalCode { get; set; } = "502 58";
-        public string AdminName { get; set; } = "Nicklas Fredriksson";
-        public string AdminPhoneNumber { get; set; } = "+467205695487";
-        public string AdminEmail { get; set; } = "nickaf@gmail.com";
-
-        [ForeignKey("PropertyManagerId")]
-        public Guid PropertyManagerId { get; set; }
+        public string PropertyName { get; set; } = string.Empty;
+        public string PropertyStreet { get; set; } = string.Empty;
+        public string PropertyCity { get; set; } = string.Empty;
+        public string PropertyPostalCode { get; set; } = string.Empty;
+        public string AdminName { get; set; } = string.Empty;
+        public string AdminPhoneNumber { get; set; } = string.Empty;
+        public string AdminEmail { get; set; } = string.Empty;
     }
 }

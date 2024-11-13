@@ -12,40 +12,18 @@ namespace backend.Services.PropertyManagerServices
 {
     public class PropertyManagerService : IPropertyManagerService
     {
-        private static List<PropertyManager> propertyManagers = new List<PropertyManager> {
-            new PropertyManager(),
-            new PropertyManager {
-                Name = "Riksbyggen",
-                StreetName = "Höstgatan 587",
-                City = "Borås",
-                PostalCode = "505 05",
-                AdminName = "Albert Ygvesson",
-                AdminPhoneNumber = "+46335986532",
-                AdminEmail = "albert.ygvesson@riksbyggen.se"
-            },
-            new PropertyManager {
-                Name = "Castellum",
-                StreetName = "Grinoargatan 33",
-                City = "Borås",
-                PostalCode = "515 25",
-                AdminName = "Gunilla Svansson",
-                AdminPhoneNumber = "+46705289654",
-                AdminEmail = "gunilla.svansson@castellum.com"
-            }
-        };
         private readonly IMapper _mapper;
-        private readonly DataContext _context;
+        private readonly DataContext _db;
 
-        public PropertyManagerService(IMapper mapper, DataContext context)
+        public PropertyManagerService(IMapper mapper, DataContext db)
         {
             _mapper = mapper;
-            _context = context;
+            _db = db;
         }
-
         public async Task<ServiceResponse<List<GetPropertyManagerDto>>> GetAllPropertyManager()
         {
             var serviceResponse = new ServiceResponse<GetPropertyManagerDto>();
-            var dbProjectManager = await _context.PropertyManagers.ToListAsync();
+            var dbProjectManager = await _db.PropertyManagers.ToListAsync();
             return new ServiceResponse<List<GetPropertyManagerDto>>
             {
                 Data = dbProjectManager.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList()
@@ -56,16 +34,17 @@ namespace backend.Services.PropertyManagerServices
         {
 
             var serviceResponse = new ServiceResponse<GetPropertyManagerDto>();
-            var propertyManager = propertyManagers.FirstOrDefault(propertyManager => propertyManager.Id == id);
-            serviceResponse.Data = _mapper.Map<GetPropertyManagerDto>(propertyManager);
+            var dBPropertyManager = await _db.PropertyManagers.FirstOrDefaultAsync(propertyManager => propertyManager.Id == id);
+            serviceResponse.Data = _mapper.Map<GetPropertyManagerDto>(dBPropertyManager);
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetPropertyManagerDto>>> AddPropertyManager(AddPropertyManagerDto newPropertyManager)
         {
             var serviceResponse = new ServiceResponse<List<GetPropertyManagerDto>>();
-            propertyManagers.Add(_mapper.Map<PropertyManager>(newPropertyManager));
-            serviceResponse.Data = propertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList();
+            _db.PropertyManagers.Add(_mapper.Map<PropertyManager>(newPropertyManager));
+            await _db.SaveChangesAsync();
+            serviceResponse.Data = await _db.PropertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToListAsync();
             return serviceResponse;
         }
 
@@ -75,7 +54,8 @@ namespace backend.Services.PropertyManagerServices
 
             try
             {
-                PropertyManager propertyManager = propertyManagers.FirstOrDefault(propertyManager => propertyManager.Id == updatedPropertyManager.Id);
+                PropertyManager propertyManager = await _db.PropertyManagers
+                .FirstOrDefaultAsync(propertyManager => propertyManager.Id == updatedPropertyManager.Id);
                 if (propertyManager != null)
                 {
                     if (!string.IsNullOrEmpty(updatedPropertyManager.Name))
@@ -107,6 +87,7 @@ namespace backend.Services.PropertyManagerServices
                         propertyManager.AdminEmail = updatedPropertyManager.AdminEmail;
                     }
 
+                    await _db.SaveChangesAsync();
                     serviceResponse.Data = _mapper.Map<GetPropertyManagerDto>(propertyManager);
                 }
                 else
@@ -131,10 +112,11 @@ namespace backend.Services.PropertyManagerServices
 
             try
             {
-                PropertyManager propertyManager = propertyManagers.First(propertyManager => propertyManager.Id == id);
+                PropertyManager propertyManager = await _db.PropertyManagers.FirstAsync(propertyManager => propertyManager.Id == id);
 
-                propertyManagers.Remove(propertyManager);
-                serviceResponse.Data = propertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList();
+                _db.PropertyManagers.Remove(propertyManager);
+                await _db.SaveChangesAsync();
+                serviceResponse.Data = _db.PropertyManagers.Select(propertyManager => _mapper.Map<GetPropertyManagerDto>(propertyManager)).ToList();
             }
             catch (Exception ex)
             {

@@ -20,6 +20,7 @@ namespace backend
             // Property
             CreateMap<Property, GetPropertyDto>();
             CreateMap<Property, GetPropertyByPropertyManagerId>();
+            CreateMap<AddPropertyDto, Property>();
         }
     }
 }

@@ -13,56 +13,29 @@ namespace backend.Services.PropertyServices
 {
     public class PropertyServices : IPropertyServices
     {
-
-        private static List<Property> properties = new List<Property> {
-            new Property(),
-            new Property
-            {
-                PropertyManager = new PropertyManager {Id = Guid.NewGuid(), Name = "HSB"},
-                PropertyName = "BRF Sandalen",
-                PropertyStreet = "Grönsaksvägen 99",
-                PropertyCity = "Borås",
-                PropertyPostalCode = "569 89",
-                AdminName = "Gustavius Ybramsson",
-                AdminPhoneNumber = "+46725005060",
-                AdminEmail = "gustavius.ybramhsson@ica.se"
-            },
-            new Property
-            {
-                PropertyManager = new PropertyManager {Id = Guid.NewGuid(), Name = "HSB"},
-                PropertyName = "BRF Ullfil",
-                PropertyStreet = "Åsarytan 99",
-                PropertyCity = "Borås",
-                PropertyPostalCode = "500 56",
-                AdminName = "Lena Lenartsson",
-                AdminPhoneNumber = "+46785698532",
-                AdminEmail = "lena..enartsson@gmail.com"
-            },
-            new Property
-            {
-                PropertyManager = new PropertyManager {Id = Guid.NewGuid(), Name = "Castellum"},
-                PropertyName = "BRF Sandalen",
-                PropertyStreet = "Grinoargatan 33",
-                PropertyCity = "Borås",
-                PropertyPostalCode = "515 25",
-                AdminName = "Erik Eriksson",
-                AdminPhoneNumber = "+46705289654",
-                AdminEmail = "gunilla.svansson@castellum.com"
-            }
-        };
+        private readonly DataContext _db;
         public readonly IMapper _mapper;
-        private readonly DataContext _context;
 
-        public PropertyServices(IMapper mapper, DataContext context)
+        public PropertyServices(IMapper mapper, DataContext db)
         {
+            _db = db;
             _mapper = mapper;
-            _context = context;
+        }
+
+        public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty)
+        {
+            var serviceResponse = new ServiceResponse<List<GetPropertyDto>>();
+            _db.Properties.Add(_mapper.Map<Property>(newProperty));
+            await _db.SaveChangesAsync();
+            serviceResponse.Data = await _db.Properties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToListAsync();
+
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties()
         {
             var serviceResponse = new ServiceResponse<GetPropertyDto>();
-            var dbProperty = await _context.Properties.ToListAsync();
+            var dbProperty = await _db.Properties.ToListAsync();
 
             return new ServiceResponse<List<GetPropertyDto>>
             {
@@ -73,11 +46,71 @@ namespace backend.Services.PropertyServices
         public async Task<ServiceResponse<List<GetPropertyByPropertyManagerId>>> GetPropertiesPerPropertyManager(Guid id)
         {
             var serviceResponse = new ServiceResponse<List<GetPropertyByPropertyManagerId>>();
-            var dbProperties = await _context.Properties
-            .Where(property => property.PropertyManager.Id == id)
+            var dbProperties = await _db.Properties
+            .Where(property => property.PropertyManagerId == id)
             .ToListAsync();
 
             serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerId>(properties)).ToList();
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty)
+        {
+            ServiceResponse<GetPropertyDto> serviceResponse = new ServiceResponse<GetPropertyDto>();
+
+            Property property = await _db.Properties
+                .FirstOrDefaultAsync(property => property.Id == updatedProperty.Id);
+            try
+            {
+                if (property != null)
+                {
+                    if (!string.IsNullOrEmpty(updatedProperty.PropertyName))
+                    {
+                        property.PropertyName = updatedProperty.PropertyName;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.PropertyStreet))
+                    {
+                        property.PropertyStreet = updatedProperty.PropertyStreet;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.PropertyCity))
+                    {
+                        property.PropertyCity = updatedProperty.PropertyCity;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.PropertyPostalCode))
+                    {
+                        property.PropertyPostalCode = updatedProperty.PropertyPostalCode;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.AdminName))
+                    {
+                        property.AdminName = updatedProperty.AdminName;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.AdminPhoneNumber))
+                    {
+                        property.AdminPhoneNumber = updatedProperty.AdminPhoneNumber;
+                    }
+                    if (!string.IsNullOrEmpty(updatedProperty.AdminEmail))
+                    {
+                        property.AdminEmail = updatedProperty.AdminEmail;
+                    }
+
+                    await _db.SaveChangesAsync();
+                    serviceResponse.Data = _mapper.Map<GetPropertyDto>(property);
+
+                }
+                else
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Property not found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+
             return serviceResponse;
         }
     }

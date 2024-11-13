@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace backend.Dtos.Property
 {
-    public class GetPropertyByPropertyManagerId
+    public class AddPropertyDto
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         public string PropertyName { get; set; } = string.Empty;
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;
@@ -18,5 +17,7 @@ namespace backend.Dtos.Property
         public string AdminEmail { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        [ForeignKey("PropertyManagerId")]
+        public Guid PropertyManagerId { get; set; }
     }
 }

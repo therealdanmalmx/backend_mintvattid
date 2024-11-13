@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace backend.Dtos.Property
 {
-    public class GetPropertyByPropertyManagerId
+    public class UpdatedPropertyDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string PropertyName { get; set; } = string.Empty;
@@ -16,7 +15,5 @@ namespace backend.Dtos.Property
         public string AdminName { get; set; } = string.Empty;
         public string AdminPhoneNumber { get; set; } = string.Empty;
         public string AdminEmail { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
     }
 }
