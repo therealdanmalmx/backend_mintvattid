@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241113110759_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241114144334_InitalCreate")]
+    partial class InitalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,8 +67,6 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyManagerId");
-
                     b.ToTable("Properties");
                 });
 
@@ -78,51 +76,70 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AdminEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("RealEstateCompaniesNameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RealEstateCompanyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StreetName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RealEstateCompaniesNameId");
+
+                    b.ToTable("PropertyManagers");
+                });
+
+            modelBuilder.Entity("backend.models.RealEstateCompanies", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PropertyManagers");
+                    b.ToTable("RealEstateCompanies");
                 });
 
-            modelBuilder.Entity("backend.models.Property", b =>
+            modelBuilder.Entity("backend.models.PropertyManager", b =>
                 {
-                    b.HasOne("backend.models.PropertyManager", "PropertyManager")
+                    b.HasOne("backend.models.RealEstateCompanies", "RealEstateCompaniesName")
                         .WithMany()
-                        .HasForeignKey("PropertyManagerId")
+                        .HasForeignKey("RealEstateCompaniesNameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PropertyManager");
+                    b.Navigation("RealEstateCompaniesName");
                 });
 #pragma warning restore 612, 618
         }

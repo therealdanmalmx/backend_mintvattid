@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -8,12 +9,14 @@ namespace backend.Dtos.PropertyManager
 {
     public class AddPropertyManagerDto
     {
-        public string Name { get; set; } = "HSB";
-        public string StreetName { get; set; } = "Södra Korsgatan 11";
-        public string City { get; set; } = "Borås";
-        public string PostalCode { get; set; } = "504 33";
-        public string AdminName { get; set; } = "Lena Andersson";
-        public string AdminPhoneNumber { get; set; } = "+46758956532";
-        public string AdminEmail { get; set; } = "lena.anderssson@hsb.com";
+        public RealEstateCompanies RealEstateCompaniesName { get; set; } = new RealEstateCompanies { Name = string.Empty };
+        public string? StreetName { get; set; } = string.Empty;
+        public string? City { get; set; } = string.Empty;
+        public string? PostalCode { get; set; } = string.Empty;
+        public string? ContactName { get; set; } = string.Empty;
+        public string? Contact { get; set; } = string.Empty;
+        public string? ContactPhoneNumber { get; set; } = string.Empty;
+        public string? ContactEmail { get; set; } = string.Empty;
+
     }
 }

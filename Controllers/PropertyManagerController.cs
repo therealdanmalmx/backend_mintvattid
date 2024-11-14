@@ -13,6 +13,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class PropertyManagerController : Controller
     {
         private readonly ILogger<PropertyManagerController> _logger;

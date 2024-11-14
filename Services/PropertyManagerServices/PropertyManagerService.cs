@@ -58,10 +58,6 @@ namespace backend.Services.PropertyManagerServices
                 .FirstOrDefaultAsync(propertyManager => propertyManager.Id == updatedPropertyManager.Id);
                 if (propertyManager != null)
                 {
-                    if (!string.IsNullOrEmpty(updatedPropertyManager.Name))
-                    {
-                        propertyManager.Name = updatedPropertyManager.Name;
-                    }
                     if (!string.IsNullOrEmpty(updatedPropertyManager.StreetName))
                     {
                         propertyManager.StreetName = updatedPropertyManager.StreetName;
@@ -74,17 +70,17 @@ namespace backend.Services.PropertyManagerServices
                     {
                         propertyManager.PostalCode = updatedPropertyManager.PostalCode;
                     }
-                    if (!string.IsNullOrEmpty(updatedPropertyManager.AdminName))
+                    if (!string.IsNullOrEmpty(updatedPropertyManager.ContactName))
                     {
-                        propertyManager.AdminName = updatedPropertyManager.AdminName;
+                        propertyManager.ContactName = updatedPropertyManager.ContactName;
                     }
-                    if (!string.IsNullOrEmpty(updatedPropertyManager.AdminPhoneNumber))
+                    if (!string.IsNullOrEmpty(updatedPropertyManager.ContactPhoneNumber))
                     {
-                        propertyManager.AdminPhoneNumber = updatedPropertyManager.AdminPhoneNumber;
+                        propertyManager.ContactPhoneNumber = updatedPropertyManager.ContactPhoneNumber;
                     }
-                    if (!string.IsNullOrEmpty(updatedPropertyManager.AdminEmail))
+                    if (!string.IsNullOrEmpty(updatedPropertyManager.ContactEmail))
                     {
-                        propertyManager.AdminEmail = updatedPropertyManager.AdminEmail;
+                        propertyManager.ContactEmail = updatedPropertyManager.ContactEmail;
                     }
 
                     await _db.SaveChangesAsync();

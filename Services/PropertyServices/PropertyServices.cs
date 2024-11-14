@@ -47,7 +47,7 @@ namespace backend.Services.PropertyServices
         {
             var serviceResponse = new ServiceResponse<List<GetPropertyByPropertyManagerId>>();
             var dbProperties = await _db.Properties
-            .Where(property => property.PropertyManagerId == id)
+            .Where(property => property.Id == id)
             .ToListAsync();
 
             serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerId>(properties)).ToList();

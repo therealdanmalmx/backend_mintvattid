@@ -9,12 +9,12 @@ namespace backend.Dtos.PropertyManager
     public class UpdatePropertyManagerDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = "";
-        public string StreetName { get; set; } = "";
-        public string City { get; set; } = "";
-        public string PostalCode { get; set; } = "";
-        public string AdminName { get; set; } = "";
-        public string AdminPhoneNumber { get; set; } = "";
-        public string AdminEmail { get; set; } = "";
+        public string? StreetName { get; set; } = string.Empty;
+        public string? City { get; set; } = string.Empty;
+        public string? PostalCode { get; set; } = string.Empty;
+        public string? ContactName { get; set; } = string.Empty;
+        public string? Contact { get; set; } = string.Empty;
+        public string? ContactPhoneNumber { get; set; } = string.Empty;
+        public string? ContactEmail { get; set; } = string.Empty;
     }
 }

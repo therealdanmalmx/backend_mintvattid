@@ -24,13 +24,13 @@ namespace backend.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAllProperties")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<GetPropertyDto>>> GetAllProperties()
         {
             return Ok(await _propertyServices.GetAllProperties());
         }
 
-        [HttpGet("GetAllPropertiesPerPropertyManager/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> GetPropertiesPerPropertyManager(Guid id)
         {
             return Ok(await _propertyServices.GetPropertiesPerPropertyManager(id));

@@ -9,6 +9,7 @@ namespace backend.models
     public class Property
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public RealEstateCompanies RealEstateCompany { get; set; } = new RealEstateCompanies { Name = string.Empty };
         public string PropertyName { get; set; } = string.Empty;
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;
@@ -18,7 +19,7 @@ namespace backend.models
         public string AdminEmail { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("PropertyManagerId")]
-        public Guid PropertyManagerId { get; set; }
+        [ForeignKey("RealEstateCompaniesId")]
+        public Guid RealEstateCompaniesId { get; set; }
     }
 }
