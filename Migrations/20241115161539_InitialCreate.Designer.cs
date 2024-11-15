@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241114144334_InitalCreate")]
-    partial class InitalCreate
+    [Migration("20241115161539_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,27 +31,15 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AdminEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdminPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
 
                     b.Property<string>("PropertyCity")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PropertyManagerId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PropertyName")
                         .IsRequired()
@@ -65,7 +53,15 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RealEstateCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RealEstateCompanyId");
 
                     b.ToTable("Properties");
                 });
@@ -77,43 +73,51 @@ namespace backend.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contact")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactPhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PostalCode")
+                    b.Property<string>("LocalName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RealEstateCompaniesNameId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RealEstateCompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StreetName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RealEstateCompaniesNameId");
+                    b.HasIndex("RealEstateCompanyId");
 
                     b.ToTable("PropertyManagers");
                 });
 
-            modelBuilder.Entity("backend.models.RealEstateCompanies", b =>
+            modelBuilder.Entity("backend.models.RealEstateCompany", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,15 +135,68 @@ namespace backend.Migrations
                     b.ToTable("RealEstateCompanies");
                 });
 
-            modelBuilder.Entity("backend.models.PropertyManager", b =>
+            modelBuilder.Entity("backend.models.User", b =>
                 {
-                    b.HasOne("backend.models.RealEstateCompanies", "RealEstateCompaniesName")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("backend.models.Property", b =>
+                {
+                    b.HasOne("backend.models.RealEstateCompany", "RealEstateCompany")
                         .WithMany()
-                        .HasForeignKey("RealEstateCompaniesNameId")
+                        .HasForeignKey("RealEstateCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RealEstateCompaniesName");
+                    b.Navigation("RealEstateCompany");
+                });
+
+            modelBuilder.Entity("backend.models.PropertyManager", b =>
+                {
+                    b.HasOne("backend.models.RealEstateCompany", "RealEstateCompanyName")
+                        .WithMany()
+                        .HasForeignKey("RealEstateCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RealEstateCompanyName");
                 });
 #pragma warning restore 612, 618
         }

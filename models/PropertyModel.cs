@@ -14,12 +14,10 @@ namespace backend.models
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;
         public string PropertyPostalCode { get; set; } = string.Empty;
-        public string AdminName { get; set; } = string.Empty;
-        public string AdminPhoneNumber { get; set; } = string.Empty;
-        public string AdminEmail { get; set; } = string.Empty;
+        public int MyProperty { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("RealEstateCompaniesId")]
-        public Guid RealEstateCompaniesId { get; set; }
+        [ForeignKey("UserId")]
+        public Guid UserId { get; set; }
     }
 }

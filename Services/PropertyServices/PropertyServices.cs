@@ -80,18 +80,6 @@ namespace backend.Services.PropertyServices
                     {
                         property.PropertyPostalCode = updatedProperty.PropertyPostalCode;
                     }
-                    if (!string.IsNullOrEmpty(updatedProperty.AdminName))
-                    {
-                        property.AdminName = updatedProperty.AdminName;
-                    }
-                    if (!string.IsNullOrEmpty(updatedProperty.AdminPhoneNumber))
-                    {
-                        property.AdminPhoneNumber = updatedProperty.AdminPhoneNumber;
-                    }
-                    if (!string.IsNullOrEmpty(updatedProperty.AdminEmail))
-                    {
-                        property.AdminEmail = updatedProperty.AdminEmail;
-                    }
 
                     await _db.SaveChangesAsync();
                     serviceResponse.Data = _mapper.Map<GetPropertyDto>(property);
