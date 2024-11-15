@@ -9,7 +9,7 @@ namespace backend.models
     public class Property
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public RealEstateCompanies RealEstateCompany { get; set; } = new RealEstateCompanies { Name = string.Empty };
+        public RealEstateCompany RealEstateCompany { get; set; } = new RealEstateCompany { Name = string.Empty };
         public string PropertyName { get; set; } = string.Empty;
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;

@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using backend.Services.PropertyServices;
 using backend.Data;
 using Microsoft.EntityFrameworkCore;
+using backend.Services.RealEstateCompaniesServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,7 @@ builder.Services.AddSwaggerGen(swaggerInfo =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IPropertyManagerService, PropertyManagerService>();
 builder.Services.AddScoped<IPropertyServices, PropertyServices>();
-
+builder.Services.AddScoped<IRealEstateCompanyService, RealEstateCompanyService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

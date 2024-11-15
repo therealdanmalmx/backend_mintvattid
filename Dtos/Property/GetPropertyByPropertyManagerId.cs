@@ -16,7 +16,6 @@ namespace backend.Dtos.Property
         public string AdminName { get; set; } = string.Empty;
         public string AdminPhoneNumber { get; set; } = string.Empty;
         public string AdminEmail { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     }
 }

@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using backend.models;
 
 namespace backend.Dtos.PropertyManager
 {
     public class AddPropertyManagerDto
     {
-        public RealEstateCompanies RealEstateCompaniesName { get; set; } = new RealEstateCompanies { Name = string.Empty };
+        public backend.models.RealEstateCompany RealEstateCompanyName { get; set; } = new backend.models.RealEstateCompany { Name = string.Empty };
         public string? StreetName { get; set; } = string.Empty;
         public string? City { get; set; } = string.Empty;
         public string? PostalCode { get; set; } = string.Empty;

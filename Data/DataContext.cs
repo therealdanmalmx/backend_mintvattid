@@ -13,7 +13,10 @@ namespace backend.Data
 
         }
 
+
+        public DbSet<RealEstateCompany> RealEstateCompanies { get; set; }
         public DbSet<PropertyManager> PropertyManagers { get; set; }
         public DbSet<Property> Properties { get; set; }
+
     }
 }

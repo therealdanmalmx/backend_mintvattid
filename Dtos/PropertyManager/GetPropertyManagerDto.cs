@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using backend.models;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using backend.models;
 
 namespace backend.Dtos.PropertyManager
 {
     public class GetPropertyManagerDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public RealEstateCompanies RealEstateCompaniesName { get; set; } = new RealEstateCompanies { Name = string.Empty };
+        public backend.models.RealEstateCompany RealEstateCompanysName { get; set; } = new backend.models.RealEstateCompany { Name = string.Empty };
         public string? StreetName { get; set; } = string.Empty;
         public string? City { get; set; } = string.Empty;
         public string? PostalCode { get; set; } = string.Empty;
