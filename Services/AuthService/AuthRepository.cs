@@ -15,9 +15,29 @@ namespace backend.Services.AuthService
         {
             _db = db;
         }
-        public Task<ServiceResponse<string>> LoginUser(string username, string password)
+        public async Task<ServiceResponse<string>> LoginUser(string username, string password)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<string>();
+
+            var user = await _db.Users.FirstOrDefaultAsync(user => user.UserName.ToLower().Equals(username.ToLower()));
+
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Användare / lösenord kunde inte hittas";
+            }
+
+            else if (!VerifyUser(password, user.PasswordHash, user.PasswordSalt))
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Användare / lösenord kunde inte hittas";
+            }
+            else
+            {
+                serviceResponse.Data = user.Id.ToString();
+            }
+
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<Guid>> RegisterUser(User user, string password)
@@ -57,6 +77,16 @@ namespace backend.Services.AuthService
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyUser(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
+                return computeHash.SequenceEqual(passwordHash);
             }
         }
     }
