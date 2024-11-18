@@ -7,6 +7,7 @@ using backend.Services.PropertyServices;
 using backend.Data;
 using Microsoft.EntityFrameworkCore;
 using backend.Services.RealEstateCompaniesServices;
+using backend.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IPropertyManagerService, PropertyManagerService>();
 builder.Services.AddScoped<IPropertyServices, PropertyServices>();
 builder.Services.AddScoped<IRealEstateCompanyService, RealEstateCompanyService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

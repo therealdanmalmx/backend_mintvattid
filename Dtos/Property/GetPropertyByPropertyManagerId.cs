@@ -9,13 +9,11 @@ namespace backend.Dtos.Property
     public class GetPropertyByPropertyManagerId
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+
         public string PropertyName { get; set; } = string.Empty;
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;
         public string PropertyPostalCode { get; set; } = string.Empty;
-        public string AdminName { get; set; } = string.Empty;
-        public string AdminPhoneNumber { get; set; } = string.Empty;
-        public string AdminEmail { get; set; } = string.Empty;
 
     }
 }
