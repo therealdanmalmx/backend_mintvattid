@@ -104,7 +104,12 @@ namespace backend.Services.AuthService
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var tokenCode = _configuration.GetSection("AppSettings:Token").Value;
+            if (string.IsNullOrEmpty(tokenCode))
+            {
+                throw new Exception("Token is not configured properly.");
+            }
+            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(tokenCode));
 
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
