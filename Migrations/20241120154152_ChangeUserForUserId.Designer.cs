@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241115171711_UserPropertyRelationship")]
-    partial class UserPropertyRelationship
+    [Migration("20241120154152_ChangeUserForUserId")]
+    partial class ChangeUserForUserId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,9 +33,6 @@ namespace backend.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
 
                     b.Property<string>("PropertyCity")
                         .IsRequired()
@@ -57,8 +54,6 @@ namespace backend.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RealEstateCompanyId");
 
                     b.ToTable("Properties");
                 });
@@ -142,9 +137,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -154,6 +146,10 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -181,20 +177,11 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyId");
+                    b.HasIndex("PropertyId")
+                        .IsUnique()
+                        .HasFilter("[PropertyId] IS NOT NULL");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("backend.models.Property", b =>
-                {
-                    b.HasOne("backend.models.RealEstateCompany", "RealEstateCompany")
-                        .WithMany()
-                        .HasForeignKey("RealEstateCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RealEstateCompany");
                 });
 
             modelBuilder.Entity("backend.models.PropertyManager", b =>
@@ -210,16 +197,14 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.models.User", b =>
                 {
-                    b.HasOne("backend.models.Property", "Property")
-                        .WithMany("Users")
-                        .HasForeignKey("PropertyId");
-
-                    b.Navigation("Property");
+                    b.HasOne("backend.models.Property", null)
+                        .WithOne("User")
+                        .HasForeignKey("backend.models.User", "PropertyId");
                 });
 
             modelBuilder.Entity("backend.models.Property", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

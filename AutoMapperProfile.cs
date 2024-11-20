@@ -23,7 +23,8 @@ namespace backend
 
             // Property
             CreateMap<Property, GetPropertyDto>();
-            CreateMap<Property, GetPropertyByPropertyManagerId>();
+            CreateMap<Property, GetAllUsersForPropertyDto>();
+            CreateMap<Property, GetPropertyByPropertyManagerIdDto>();
             CreateMap<AddPropertyDto, Property>();
             CreateMap<UpdatedPropertyDto, Property>();
 

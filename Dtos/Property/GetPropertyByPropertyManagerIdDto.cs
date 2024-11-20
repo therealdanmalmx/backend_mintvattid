@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.Dtos.Property
 {
-    public class GetPropertyByPropertyManagerId
+    public class GetPropertyByPropertyManagerIdDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

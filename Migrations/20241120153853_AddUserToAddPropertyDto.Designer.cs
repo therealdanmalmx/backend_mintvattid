@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241118144737_AddPasswordToUserModel")]
-    partial class AddPasswordToUserModel
+    [Migration("20241120153853_AddUserToAddPropertyDto")]
+    partial class AddUserToAddPropertyDto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,6 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RealEstateCompanyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -175,9 +172,14 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PropertyId")
+                        .IsUnique()
+                        .HasFilter("[PropertyId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -191,6 +193,18 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("RealEstateCompanyName");
+                });
+
+            modelBuilder.Entity("backend.models.User", b =>
+                {
+                    b.HasOne("backend.models.Property", null)
+                        .WithOne("User")
+                        .HasForeignKey("backend.models.User", "PropertyId");
+                });
+
+            modelBuilder.Entity("backend.models.Property", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

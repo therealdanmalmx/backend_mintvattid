@@ -66,7 +66,7 @@ namespace backend.Services.RealEstateCompaniesServices
         public async Task<ServiceResponse<GetRealEstateCompanyDto>> GetRealEstateCompanyById(Guid id)
         {
             var serviceResponse = new ServiceResponse<GetRealEstateCompanyDto>();
-            var dbRealEstateCompanies = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id == id);
+            var dbRealEstateCompanies = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id.Equals(id));
             serviceResponse.Data = _mapper.Map<GetRealEstateCompanyDto>(dbRealEstateCompanies);
 
             return serviceResponse;
@@ -76,7 +76,7 @@ namespace backend.Services.RealEstateCompaniesServices
         {
             var serviceResponse = new ServiceResponse<GetRealEstateCompanyDto>();
 
-            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id == updateRealEstateCompany.Id);
+            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id.Equals(updateRealEstateCompany.Id));
 
             try
             {

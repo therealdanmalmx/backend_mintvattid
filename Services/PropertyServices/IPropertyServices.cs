@@ -8,9 +8,10 @@ namespace backend.Services.PropertyServices
 {
     public interface IPropertyServices
     {
-        Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties();
-        Task<ServiceResponse<List<GetPropertyByPropertyManagerId>>> GetPropertiesPerPropertyManager(Guid id);
-        Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty);
+        Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties(Guid userId);
+        Task<ServiceResponse<List<GetPropertyByPropertyManagerIdDto>>> GetPropertiesPerPropertyManager(Guid id);
+        Task<ServiceResponse<List<GetAllUsersForPropertyDto>>> GetAllUsersForProperty(Guid propertyIdd);
+        Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty, Guid userId);
         Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty);
         Task<ServiceResponse<List<GetPropertyDto>>> DeleteProperty(Guid id);
 

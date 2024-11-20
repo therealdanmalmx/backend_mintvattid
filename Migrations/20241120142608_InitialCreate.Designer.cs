@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241118103653_UpdateRegisterDto")]
-    partial class UpdateRegisterDto
+    [Migration("20241120142608_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,8 +54,6 @@ namespace backend.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RealEstateCompanyId");
 
                     b.ToTable("Properties");
                 });
@@ -139,9 +137,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -170,7 +165,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PropertyId")
+                    b.Property<Guid?>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Role")
@@ -182,20 +177,11 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyId");
+                    b.HasIndex("PropertyId")
+                        .IsUnique()
+                        .HasFilter("[PropertyId] IS NOT NULL");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("backend.models.Property", b =>
-                {
-                    b.HasOne("backend.models.RealEstateCompany", "RealEstateCompany")
-                        .WithMany()
-                        .HasForeignKey("RealEstateCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RealEstateCompany");
                 });
 
             modelBuilder.Entity("backend.models.PropertyManager", b =>
@@ -212,15 +198,13 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.models.User", b =>
                 {
                     b.HasOne("backend.models.Property", null)
-                        .WithMany("Users")
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("User")
+                        .HasForeignKey("backend.models.User", "PropertyId");
                 });
 
             modelBuilder.Entity("backend.models.Property", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

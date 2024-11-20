@@ -15,7 +15,6 @@ namespace backend.Dtos.UserRegister
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
 
-        [ForeignKey("PropertyId")]
         public Guid? PropertyId { get; set; }
     }
 }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using backend.Data;
 using backend.Dtos.RealEstateCompany;
 using backend.Services.RealEstateCompaniesServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class RealEstateCompanyController : Controller
@@ -47,7 +49,7 @@ namespace backend.Controllers
             return Ok(await _realEstateCompanyService.UpdateRealEstateCompany(updateRealEstateCompany));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<List<GetRealEstateCompanyDto>>>> DeleteRealEstateCompany(Guid id)
         {
             return Ok(await _realEstateCompanyService.DeleteRealEstateCompany(id));

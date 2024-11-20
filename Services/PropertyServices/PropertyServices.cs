@@ -22,35 +22,81 @@ namespace backend.Services.PropertyServices
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty)
+        public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty, Guid userId)
         {
             var serviceResponse = new ServiceResponse<List<GetPropertyDto>>();
-            _db.Properties.Add(_mapper.Map<Property>(newProperty));
+            var property = _mapper.Map<Property>(newProperty);
+            if (property.User != null)
+            {
+                property.User.Id = userId;
+            }
+            _db.Properties.Add(property);
             await _db.SaveChangesAsync();
-            serviceResponse.Data = await _db.Properties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToListAsync();
+            serviceResponse.Data = _db.Properties
+                .Where(p => p.User != null && p.User.Id.Equals(userId))
+                .Select(property => _mapper.Map<GetPropertyDto>(property))
+                .ToList();
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties()
+        public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties(Guid userId)
         {
             var serviceResponse = new ServiceResponse<GetPropertyDto>();
-            var dbProperty = await _db.Properties.ToListAsync();
+            var dbProperties = await _db.Properties.ToListAsync();
 
             return new ServiceResponse<List<GetPropertyDto>>
             {
-                Data = dbProperty.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList()
+                Data = dbProperties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList()
             };
         }
 
-        public async Task<ServiceResponse<List<GetPropertyByPropertyManagerId>>> GetPropertiesPerPropertyManager(Guid id)
+        public async Task<ServiceResponse<List<GetAllUsersForPropertyDto>>> GetAllUsersForProperty(Guid propertyId)
         {
-            var serviceResponse = new ServiceResponse<List<GetPropertyByPropertyManagerId>>();
+            var serviceResponse = new ServiceResponse<List<GetAllUsersForPropertyDto>>();
+
+            try
+            {
+                var dbProperties = await _db.Properties.(p => p.User.Id).FirstOrDefaultAsync(p => p.Id.Equals(propertyId));
+                if (dbProperties?.User == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Användare hittades inte för den angivna fastigheten";
+                    return serviceResponse;
+                }
+
+                if (dbProperties == null || dbProperties.Id == Guid.Empty)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Du måste ange en giltig fastighet";
+                    return serviceResponse;
+                }
+
+                var users = await _db.Users.Where(u => u.PropertyId == propertyId).Select(u => _mapper.Map<GetAllUsersForPropertyDto>(u)).ToListAsync();
+
+                serviceResponse.Data = users;
+                serviceResponse.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            serviceResponse.Data = _db.Properties.Select(property => _mapper.Map<GetAllUsersForPropertyDto>(property)).ToList();
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetPropertyByPropertyManagerIdDto>>> GetPropertiesPerPropertyManager(Guid id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetPropertyByPropertyManagerIdDto>>();
             var dbProperties = await _db.Properties
             .Where(property => property.Id == id)
             .ToListAsync();
 
-            serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerId>(properties)).ToList();
+            serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerIdDto>(properties)).ToList();
             return serviceResponse;
         }
 
@@ -59,7 +105,7 @@ namespace backend.Services.PropertyServices
             ServiceResponse<GetPropertyDto> serviceResponse = new ServiceResponse<GetPropertyDto>();
 
             Property property = await _db.Properties
-                .FirstOrDefaultAsync(property => property.Id == updatedProperty.Id);
+                .FirstOrDefaultAsync(property => property.Id.Equals(updatedProperty.Id));
             try
             {
                 if (property != null)
@@ -108,7 +154,7 @@ namespace backend.Services.PropertyServices
 
             try
             {
-                Property property = await _db.Properties.FirstAsync(property => property.Id == id);
+                Property property = await _db.Properties.FirstAsync(property => property.Id.Equals(id));
                 _db.Properties.Remove(property);
                 await _db.SaveChangesAsync();
                 serviceResponse.Data = _db.Properties.Select(property => _mapper.Map<GetPropertyDto>(property)).ToList();
@@ -121,5 +167,6 @@ namespace backend.Services.PropertyServices
 
             return serviceResponse;
         }
+
     }
 }

@@ -69,7 +69,7 @@ namespace backend.Services.AuthService
 
         public async Task<bool> UserExists(string username)
         {
-            if (await _db.Users.AnyAsync(user => user.UserName.ToLower() == username.ToLower()))
+            if (await _db.Users.AnyAsync(user => user.UserName.ToLower().Equals(username.ToLower())))
             {
                 return true;
             }

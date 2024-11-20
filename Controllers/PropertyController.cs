@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using backend.Dtos.Property;
 using backend.Services.PropertyServices;
@@ -29,7 +30,20 @@ namespace backend.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<GetPropertyDto>>> GetAllProperties()
         {
-            return Ok(await _propertyServices.GetAllProperties());
+            var claim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+            if (claim == null)
+            {
+                return Unauthorized(new ServiceResponse<GetPropertyDto> { Success = false, Message = "User claim not found" });
+            }
+            Guid userId = Guid.Parse(claim.Value);
+            return Ok(await _propertyServices.GetAllProperties(userId));
+        }
+
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<ServiceResponse<List<GetAllUsersForPropertyDto>>>> GetAllUsersForProperty(Guid propertyId)
+        {
+            return Ok(await _propertyServices.GetAllUsersForProperty(propertyId));
         }
 
         [HttpGet("{id}")]
@@ -39,9 +53,9 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> AddProperty(AddPropertyDto newProperty)
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> AddProperty(AddPropertyDto newProperty, Guid userId)
         {
-            return Ok(await _propertyServices.AddProperty(newProperty));
+            return Ok(await _propertyServices.AddProperty(newProperty, userId));
         }
 
         [HttpPut]

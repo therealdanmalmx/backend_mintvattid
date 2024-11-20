@@ -50,9 +50,6 @@ namespace backend.Migrations
                     b.Property<Guid>("RealEstateCompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.ToTable("Properties");
@@ -172,9 +169,14 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PropertyId")
+                        .IsUnique()
+                        .HasFilter("[PropertyId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -188,6 +190,18 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("RealEstateCompanyName");
+                });
+
+            modelBuilder.Entity("backend.models.User", b =>
+                {
+                    b.HasOne("backend.models.Property", null)
+                        .WithOne("User")
+                        .HasForeignKey("backend.models.User", "PropertyId");
+                });
+
+            modelBuilder.Entity("backend.models.Property", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
