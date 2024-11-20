@@ -10,6 +10,7 @@ using backend.Services.RealEstateCompaniesServices;
 using backend.Services.AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,17 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(swaggerInfo =>
+builder.Services.AddSwaggerGen(config =>
 {
-    swaggerInfo.SwaggerDoc("v1", new OpenApiInfo
+    config.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard auktoriseringshuvud med hjälp av Bearer-schema, t.e.x. \"bearer {token}\"",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    config.OperationFilter<SecurityRequirementsOperationFilter>();
+    config.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1.0.0",
         Title = "Tvättid",
