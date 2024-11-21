@@ -38,6 +38,7 @@ builder.Services.AddSwaggerGen(config =>
     });
 });
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPropertyManagerService, PropertyManagerService>();
 builder.Services.AddScoped<IPropertyServices, PropertyServices>();
 builder.Services.AddScoped<IRealEstateCompanyService, RealEstateCompanyService>();

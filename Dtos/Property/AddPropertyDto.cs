@@ -19,7 +19,5 @@ namespace backend.Dtos.Property
         public string PropertyCity { get; set; } = string.Empty;
         public string PropertyPostalCode { get; set; } = string.Empty;
 
-        [JsonIgnore]
-        public UserModel? User { get; set; }
     }
 }

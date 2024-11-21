@@ -6,6 +6,7 @@ using AutoMapper;
 using backend.Dtos.Property;
 using backend.Dtos.PropertyManager;
 using backend.Dtos.RealEstateCompany;
+using backend.Dtos.UserDto;
 using backend.Dtos.UserRegister;
 
 namespace backend
@@ -19,11 +20,15 @@ namespace backend
             CreateMap<AddRealEstateCompanyDto, RealEstateCompany>();
 
             // User
+            CreateMap<User, GetUserDto>();
             CreateMap<UserRegisterDto, User>();
 
             // Property
             CreateMap<Property, GetPropertyDto>();
-            CreateMap<Property, GetAllUsersForPropertyDto>();
+            CreateMap<User, GetAllUsersForPropertyDto>()
+                .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Property.PropertyName))
+                .ForMember(dest => dest.Users, opt => opt.MapFrom(src => new List<User> { src }));
+            CreateMap<User, GetUserDto>();
             CreateMap<Property, GetPropertyByPropertyManagerIdDto>();
             CreateMap<AddPropertyDto, Property>();
             CreateMap<UpdatedPropertyDto, Property>();

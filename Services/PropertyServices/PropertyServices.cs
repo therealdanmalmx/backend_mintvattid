@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using backend.Data;
 using backend.Dtos.Property;
+using backend.Dtos.UserDto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
@@ -14,28 +17,39 @@ namespace backend.Services.PropertyServices
     public class PropertyServices : IPropertyServices
     {
         private readonly DataContext _db;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public readonly IMapper _mapper;
 
-        public PropertyServices(IMapper mapper, DataContext db)
+        public PropertyServices(IMapper mapper, DataContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty, Guid userId)
+        public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty)
         {
             var serviceResponse = new ServiceResponse<List<GetPropertyDto>>();
-            var property = _mapper.Map<Property>(newProperty);
-            if (property.User != null)
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
             {
-                property.User.Id = userId;
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Användaren är inte autentiserad";
             }
+
+            var property = _mapper.Map<Property>(newProperty);
+            property.UserId = Guid.Parse(userId);
+
             _db.Properties.Add(property);
             await _db.SaveChangesAsync();
-            serviceResponse.Data = _db.Properties
-                .Where(p => p.User != null && p.User.Id.Equals(userId))
-                .Select(property => _mapper.Map<GetPropertyDto>(property))
-                .ToList();
+
+            var properties = await _db.Properties
+                .Where(p => p.UserId.Equals(userId))
+                .ProjectTo<GetPropertyDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            serviceResponse.Data = properties;
 
             return serviceResponse;
         }
@@ -57,26 +71,29 @@ namespace backend.Services.PropertyServices
 
             try
             {
-                var dbProperties = await _db.Properties.(p => p.User.Id).FirstOrDefaultAsync(p => p.Id.Equals(propertyId));
-                if (dbProperties?.User == null)
+                var property = await _db.Properties.Include(p => p.Users).FirstOrDefaultAsync(p => p.Id == propertyId);
+
+                if (property == null)
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = "Användare hittades inte för den angivna fastigheten";
+                    serviceResponse.Message = "Fastigheten hittades inte";
                     return serviceResponse;
                 }
 
-                if (dbProperties == null || dbProperties.Id == Guid.Empty)
+                var UsersForProperty = await _db.Users
+                    .Where(u => u.PropertyId == propertyId)
+                    .GroupBy(u => u.Property.PropertyName)
+                    .Select(p => new GetAllUsersForPropertyDto
+                    {
+                        PropertyName = p.Key,
+                        Users = p.Select(u => _mapper.Map<GetUserDto>(u)).ToList()
+                    })
+                    .ToListAsync();
+
+                return new ServiceResponse<List<GetAllUsersForPropertyDto>>
                 {
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Du måste ange en giltig fastighet";
-                    return serviceResponse;
-                }
-
-                var users = await _db.Users.Where(u => u.PropertyId == propertyId).Select(u => _mapper.Map<GetAllUsersForPropertyDto>(u)).ToListAsync();
-
-                serviceResponse.Data = users;
-                serviceResponse.Success = true;
-
+                    Data = UsersForProperty,
+                };
             }
             catch (Exception ex)
             {
@@ -84,7 +101,6 @@ namespace backend.Services.PropertyServices
                 serviceResponse.Message = ex.Message;
             }
 
-            serviceResponse.Data = _db.Properties.Select(property => _mapper.Map<GetAllUsersForPropertyDto>(property)).ToList();
 
             return serviceResponse;
         }

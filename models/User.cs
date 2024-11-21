@@ -21,5 +21,6 @@ namespace backend.models
         public UserRole Role { get; set; } = UserRole.User;
 
         public Guid? PropertyId { get; set; }
+        public Property Property { get; set; }
     }
 }

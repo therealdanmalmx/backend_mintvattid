@@ -40,6 +40,7 @@ namespace backend.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<ServiceResponse<List<GetAllUsersForPropertyDto>>>> GetAllUsersForProperty(Guid propertyId)
         {
@@ -53,9 +54,9 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> AddProperty(AddPropertyDto newProperty, Guid userId)
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> AddProperty(AddPropertyDto newProperty)
         {
-            return Ok(await _propertyServices.AddProperty(newProperty, userId));
+            return Ok(await _propertyServices.AddProperty(newProperty));
         }
 
         [HttpPut]
