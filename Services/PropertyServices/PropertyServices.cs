@@ -83,10 +83,10 @@ namespace backend.Services.PropertyServices
                 var UsersForProperty = await _db.Users
                     .Where(u => u.PropertyId == propertyId)
                     .GroupBy(u => u.Property.PropertyName)
-                    .Select(p => new GetAllUsersForPropertyDto
+                    .Select(group => new GetAllUsersForPropertyDto
                     {
-                        PropertyName = p.Key,
-                        Users = p.Select(u => _mapper.Map<GetUserDto>(u)).ToList()
+                        PropertyName = group.Key,
+                        Users = group.Select(u => _mapper.Map<GetUserDto>(u)).ToList()
                     })
                     .ToListAsync();
 
