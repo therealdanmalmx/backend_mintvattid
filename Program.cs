@@ -43,7 +43,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPropertyManagerService, PropertyManagerService>();
 builder.Services.AddScoped<IPropertyServices, PropertyServices>();
 builder.Services.AddScoped<IRealEstateCompanyService, RealEstateCompanyService>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IWashRoomServices, WashRoomServices>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

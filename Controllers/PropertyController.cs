@@ -47,6 +47,13 @@ namespace backend.Controllers
             return Ok(await _propertyServices.GetAllUsersForProperty(propertyId));
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetAllWashrooms")]
+        public async Task<ActionResult<ServiceResponse<List<GetWashroomsPerPropertyDto>>>> GetWashroomsPerProperty(Guid propertyId)
+        {
+            return Ok(await _propertyServices.GetWashroomsPerProperty(propertyId));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> GetPropertiesPerPropertyManager(Guid id)
         {

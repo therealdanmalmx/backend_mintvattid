@@ -13,19 +13,21 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly ILogger<UserController> _logger;
+        private readonly IUserServices _userServices;
 
-        public AuthController(IAuthRepository authRepository)
+        public UserController(ILogger<UserController> logger, IUserServices userServices)
         {
-            _authRepository = authRepository;
+            _userServices = userServices;
+            _logger = logger;
         }
 
-        [HttpPost("userRegister")]
+        [HttpPost("register")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserRegister(UserRegisterDto request)
         {
-            var response = await _authRepository.RegisterUser(
+            var response = await _userServices.RegisterUser(
                 new User
                 {
                     ApartmentNumber = request.ApartmentNumber,
@@ -44,10 +46,10 @@ namespace backend.Controllers
             }
             return Ok(response);
         }
-        [HttpPost("UserLogin")]
+        [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserLogin(UserLoginDto request)
         {
-            var response = await _authRepository.LoginUser(request.Username, request.Password);
+            var response = await _userServices.LoginUser(request.Username, request.Password);
 
             if (!response.Success)
             {

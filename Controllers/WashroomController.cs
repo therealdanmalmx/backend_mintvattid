@@ -23,12 +23,6 @@ namespace backend.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<ServiceResponse<List<GetWashRoomsDto>>>> GetAllWashroom()
-        {
-            return Ok(await _washRoomServices.GetAllWashRooms());
-        }
-
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<GetWashRoomsDto>>> AddWashroom(AddWashroomDto newWashroom)
         {

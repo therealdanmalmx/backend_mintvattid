@@ -10,12 +10,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services.AuthService
 {
-    public class AuthRepository : IAuthRepository
+    public class UserServices : IUserServices
     {
         private readonly DataContext _db;
         private readonly IConfiguration _configuration;
 
-        public AuthRepository(DataContext db, IConfiguration configuration)
+        public UserServices(ILogger<UserServices> logger, DataContext db, IConfiguration configuration)
         {
             _db = db;
             _configuration = configuration;

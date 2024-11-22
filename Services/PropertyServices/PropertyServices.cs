@@ -8,6 +8,7 @@ using AutoMapper.QueryableExtensions;
 using backend.Data;
 using backend.Dtos.Property;
 using backend.Dtos.UserDto;
+using backend.Dtos.WashRoom;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
@@ -112,7 +113,7 @@ namespace backend.Services.PropertyServices
             .Where(property => property.Id == id)
             .ToListAsync();
 
-            serviceResponse.Data = dbProperties.Select(properties => _mapper.Map<GetPropertyByPropertyManagerIdDto>(properties)).ToList();
+            serviceResponse.Data = dbProperties.Select(p => _mapper.Map<GetPropertyByPropertyManagerIdDto>(p)).ToList();
             return serviceResponse;
         }
 
@@ -184,5 +185,45 @@ namespace backend.Services.PropertyServices
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetWashroomsPerPropertyDto>>> GetWashroomsPerProperty(Guid propertyId)
+        {
+            {
+                var serviceResponse = new ServiceResponse<List<GetWashroomsPerPropertyDto>>();
+
+                try
+                {
+                    var property = await _db.Properties.Include(p => p.Washrooms).FirstOrDefaultAsync(p => p.Id == propertyId);
+
+                    if (property == null)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Fastigheten hittades inte";
+                        return serviceResponse;
+                    }
+
+                    var washroomsForProperty = await _db.Washrooms
+                        .Where(w => w.PropertyId == propertyId)
+                        .GroupBy(w => w.Property.PropertyName)
+                        .Select(group => new GetWashroomsPerPropertyDto
+                        {
+                            PropertyName = group.Key,
+                            WashRooms = group.Select(u => _mapper.Map<GetWashRoomsDto>(u)).ToList()
+                        })
+                        .ToListAsync();
+
+                    serviceResponse.Data = washroomsForProperty;
+
+
+                }
+                catch (Exception ex)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = ex.Message;
+                }
+
+
+                return serviceResponse;
+            }
+        }
     }
 }

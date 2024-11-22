@@ -23,17 +23,18 @@ namespace backend
             // User
             CreateMap<User, GetUserDto>();
             CreateMap<UserRegisterDto, User>();
+            CreateMap<User, GetAllUsersForPropertyDto>();
+            CreateMap<User, GetUserDto>();
 
             // Property
             CreateMap<Property, GetPropertyDto>();
-            CreateMap<User, GetAllUsersForPropertyDto>();
-            CreateMap<User, GetUserDto>();
             CreateMap<Property, GetPropertyByPropertyManagerIdDto>();
             CreateMap<AddPropertyDto, Property>();
             CreateMap<UpdatedPropertyDto, Property>();
 
             // WasRoom
             CreateMap<WashRoom, GetWashRoomsDto>();
+            CreateMap<WashRoom, GetWashroomsPerPropertyDto>();
             CreateMap<AddWashroomDto, WashRoom>();
             CreateMap<UpdateWashroomDto, WashRoom>();
 

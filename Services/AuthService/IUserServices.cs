@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace backend.Services.AuthService
 {
-    public interface IAuthRepository
+    public interface IUserServices
     {
         Task<ServiceResponse<Guid>> RegisterUser(User user, string password);
         Task<ServiceResponse<string>> LoginUser(string username, string password);

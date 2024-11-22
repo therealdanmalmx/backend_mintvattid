@@ -16,11 +16,13 @@ namespace backend.models
         public string PropertyPostalCode { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid UserId { get; set; }
+        public Guid WashRoomId { get; set; }
 
         [ForeignKey("RealEstateCompanyId")]
         public Guid RealEstateCompanyId { get; set; }
 
         public List<User>? Users { get; set; }
+        public List<WashRoom>? Washrooms { get; set; }
 
     }
 
