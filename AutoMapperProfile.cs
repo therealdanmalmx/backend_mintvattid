@@ -26,9 +26,7 @@ namespace backend
 
             // Property
             CreateMap<Property, GetPropertyDto>();
-            CreateMap<User, GetAllUsersForPropertyDto>()
-                .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Property.PropertyName))
-                .ForMember(dest => dest.Users, opt => opt.MapFrom(src => new List<User> { src }));
+            CreateMap<User, GetAllUsersForPropertyDto>();
             CreateMap<User, GetUserDto>();
             CreateMap<Property, GetPropertyByPropertyManagerIdDto>();
             CreateMap<AddPropertyDto, Property>();
