@@ -27,6 +27,7 @@ namespace backend.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<GetPropertyDto>>> GetAllProperties()
         {
@@ -48,6 +49,7 @@ namespace backend.Controllers
             return Ok(await _propertyServices.GetWashroomsPerProperty(propertyId));
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> GetPropertiesPerPropertyManager(Guid id)
         {

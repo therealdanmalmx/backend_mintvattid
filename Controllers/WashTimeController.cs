@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.Dtos.WashTime;
 using backend.Services.WashTimeService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WashTimeController : ControllerBase

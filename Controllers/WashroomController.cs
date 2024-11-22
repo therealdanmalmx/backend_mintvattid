@@ -7,9 +7,11 @@ using backend.Services.WasRoomservices;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 using backend.Services.RealEstateCompaniesServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WashroomController : ControllerBase

@@ -25,6 +25,7 @@ namespace backend.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetRealEstateCompanyDto>>>> GetAllRealEstateCompanies()
         {

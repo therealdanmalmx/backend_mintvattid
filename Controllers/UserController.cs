@@ -6,11 +6,13 @@ using backend.Dtos.User;
 using backend.Dtos.UserRegister;
 using backend.Services;
 using backend.Services.AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
