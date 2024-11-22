@@ -72,11 +72,11 @@ namespace backend.Services.RealEstateCompaniesServices
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetRealEstateCompanyDto>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto updateRealEstateCompany)
+        public async Task<ServiceResponse<GetRealEstateCompanyDto>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto updateRealEstateCompany, Guid realEstateCompanyId)
         {
             var serviceResponse = new ServiceResponse<GetRealEstateCompanyDto>();
 
-            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(r => r.Id.Equals(updateRealEstateCompany.Id));
+            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(r => r.Id.Equals(realEstateCompanyId));
 
             try
             {

@@ -11,7 +11,7 @@ namespace backend.Services.RealEstateCompaniesServices
         Task<ServiceResponse<List<GetRealEstateCompanyDto>>> GetAllRealEstateCompanies();
         Task<ServiceResponse<GetRealEstateCompanyDto>> GetRealEstateCompanyById(Guid id);
         Task<ServiceResponse<List<GetRealEstateCompanyDto>>> AddRealEstateCompany(AddRealEstateCompanyDto newRealEstateCompany);
-        Task<ServiceResponse<GetRealEstateCompanyDto>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto addRealEstateCompany);
+        Task<ServiceResponse<GetRealEstateCompanyDto>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto addRealEstateCompany, Guid realEstateCompanyId);
         Task<ServiceResponse<List<GetRealEstateCompanyDto>>> DeleteRealEstateCompany(Guid id);
     }
 }

@@ -117,12 +117,12 @@ namespace backend.Services.PropertyServices
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty)
+        public async Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty, Guid propertyId)
         {
             ServiceResponse<GetPropertyDto> serviceResponse = new ServiceResponse<GetPropertyDto>();
 
             Property property = await _db.Properties
-                .FirstOrDefaultAsync(property => property.Id.Equals(updatedProperty.Id));
+                .FirstOrDefaultAsync(property => property.Id.Equals(propertyId));
             try
             {
                 if (property != null)

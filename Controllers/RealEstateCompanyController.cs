@@ -43,10 +43,10 @@ namespace backend.Controllers
             return Ok(await _realEstateCompanyService.AddRealEstateCompany(newRealEstateCompany));
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ServiceResponse<List<GetRealEstateCompanyDto>>>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto updateRealEstateCompany)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetRealEstateCompanyDto>>>> UpdateRealEstateCompany(UpdateRealEstateCompanyDto updateRealEstateCompany, Guid id)
         {
-            return Ok(await _realEstateCompanyService.UpdateRealEstateCompany(updateRealEstateCompany));
+            return Ok(await _realEstateCompanyService.UpdateRealEstateCompany(updateRealEstateCompany, id));
         }
 
         [HttpDelete("{id}")]

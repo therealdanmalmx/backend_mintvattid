@@ -10,10 +10,10 @@ namespace backend.Services.PropertyServices
     {
         Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties(Guid userId);
         Task<ServiceResponse<List<GetPropertyByPropertyManagerIdDto>>> GetPropertiesPerPropertyManager(Guid id);
-        Task<ServiceResponse<List<GetAllUsersForPropertyDto>>> GetAllUsersForProperty(Guid propertyIdd);
-        Task<ServiceResponse<List<GetWashroomsPerPropertyDto>>> GetWashroomsPerProperty(Guid propertyIdd);
+        Task<ServiceResponse<List<GetAllUsersForPropertyDto>>> GetAllUsersForProperty(Guid propertyId);
+        Task<ServiceResponse<List<GetWashroomsPerPropertyDto>>> GetWashroomsPerProperty(Guid propertyId);
         Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty);
-        Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty);
+        Task<ServiceResponse<GetPropertyDto>> UpdateProperty(UpdatedPropertyDto updatedProperty, Guid propertyId);
         Task<ServiceResponse<List<GetPropertyDto>>> DeleteProperty(Guid id);
 
     }

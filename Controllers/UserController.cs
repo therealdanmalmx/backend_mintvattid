@@ -24,7 +24,7 @@ namespace backend.Controllers
             _logger = logger;
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserRegister(UserRegisterDto request)
         {
             var response = await _userServices.RegisterUser(
@@ -46,7 +46,7 @@ namespace backend.Controllers
             }
             return Ok(response);
         }
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserLogin(UserLoginDto request)
         {
             var response = await _userServices.LoginUser(request.Username, request.Password);

@@ -66,10 +66,10 @@ namespace backend.Controllers
             return Ok(await _propertyServices.AddProperty(newProperty));
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> UpdateProperty(UpdatedPropertyDto updatedProperty)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPropertyDto>>>> UpdateProperty(UpdatedPropertyDto updatedProperty, Guid id)
         {
-            return Ok(await _propertyServices.UpdateProperty(updatedProperty));
+            return Ok(await _propertyServices.UpdateProperty(updatedProperty, id));
         }
 
         [HttpDelete("{id}")]

@@ -7,7 +7,6 @@ namespace backend.Dtos.Property
 {
     public class UpdatedPropertyDto
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         public string PropertyName { get; set; } = string.Empty;
         public string PropertyStreet { get; set; } = string.Empty;
         public string PropertyCity { get; set; } = string.Empty;
