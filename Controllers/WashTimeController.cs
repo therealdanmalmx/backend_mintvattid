@@ -39,5 +39,11 @@ namespace backend.Controllers
             return Ok(await _washTimeServices.UpdateWashTime(updatedWashTime, id));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetWashTimesDto>>>> DeleteWastTime(Guid id)
+        {
+            return Ok(await _washTimeServices.DeleteWashTime(id));
+        }
+
     }
 }

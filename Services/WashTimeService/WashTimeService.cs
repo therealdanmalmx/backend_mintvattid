@@ -112,5 +112,28 @@ namespace backend.Services.WashTimeService
             return serviceResponse;
 
         }
+
+        public async Task<ServiceResponse<List<GetWashTimesDto>>> DeleteWashTime(Guid id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetWashTimesDto>>();
+
+            try
+            {
+                var dbWashtime = await _db.Washtimes.FirstAsync(w => w.Id == id);
+                _db.Washtimes.Remove(dbWashtime);
+                await _db.SaveChangesAsync();
+
+                serviceResponse.Data = await _db.Washtimes.Select(w => _mapper.Map<GetWashTimesDto>(w)).ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+
+        }
     }
 }

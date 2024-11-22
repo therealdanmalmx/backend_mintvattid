@@ -11,5 +11,6 @@ namespace backend.Services.WashTimeService
         Task<ServiceResponse<List<GetWashTimesDto>>> GetWashTimes();
         Task<ServiceResponse<List<GetWashTimesDto>>> AddWashTime(AddWasTimesDto newWashTime);
         Task<ServiceResponse<GetWashTimesDto>> UpdateWashTime(UpdatedWashTimeDto updatedWashTime, Guid washTimeId);
+        Task<ServiceResponse<List<GetWashTimesDto>>> DeleteWashTime(Guid id);
     }
 }
