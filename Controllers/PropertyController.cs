@@ -30,13 +30,7 @@ namespace backend.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<GetPropertyDto>>> GetAllProperties()
         {
-            var claim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
-            if (claim == null)
-            {
-                return Unauthorized(new ServiceResponse<GetPropertyDto> { Success = false, Message = "User claim not found" });
-            }
-            Guid userId = Guid.Parse(claim.Value);
-            return Ok(await _propertyServices.GetAllProperties(userId));
+            return Ok(await _propertyServices.GetAllProperties());
         }
 
 

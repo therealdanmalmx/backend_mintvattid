@@ -55,7 +55,7 @@ namespace backend.Services.PropertyServices
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties(Guid userId)
+        public async Task<ServiceResponse<List<GetPropertyDto>>> GetAllProperties()
         {
             var serviceResponse = new ServiceResponse<GetPropertyDto>();
             var dbProperties = await _db.Properties.ToListAsync();

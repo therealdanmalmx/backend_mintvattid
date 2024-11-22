@@ -9,6 +9,7 @@ using backend.Dtos.RealEstateCompany;
 using backend.Dtos.UserDto;
 using backend.Dtos.UserRegister;
 using backend.Dtos.WashRoom;
+using backend.Dtos.WashTime;
 
 namespace backend
 {
@@ -37,6 +38,11 @@ namespace backend
             CreateMap<WashRoom, GetWashroomsPerPropertyDto>();
             CreateMap<AddWashroomDto, WashRoom>();
             CreateMap<UpdateWashroomDto, WashRoom>();
+
+            // WashTime
+            CreateMap<WashTime, GetWashTimesDto>();
+            CreateMap<AddWasTimesDto, WashTime>();
+            CreateMap<UpdatedWashTimeDto, WashTime>();
 
             // PropertyManager
             CreateMap<PropertyManager, GetPropertyManagerDto>();

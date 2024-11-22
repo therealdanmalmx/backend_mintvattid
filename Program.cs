@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Filters;
 using backend.Services.WasRoomservices;
+using backend.Services.WashTimeService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddScoped<IPropertyServices, PropertyServices>();
 builder.Services.AddScoped<IRealEstateCompanyService, RealEstateCompanyService>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IWashRoomServices, WashRoomServices>();
+builder.Services.AddScoped<IWashTimeServices, WashTimeServices>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

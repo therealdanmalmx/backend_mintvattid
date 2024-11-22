@@ -19,6 +19,7 @@ namespace backend.Data
         public DbSet<Property> Properties { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<WashRoom> Washrooms { get; set; }
+        public DbSet<WashTime> Washtimes { get; set; }
 
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
