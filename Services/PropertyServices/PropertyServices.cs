@@ -23,8 +23,8 @@ namespace backend.Services.PropertyServices
         public PropertyServices(IMapper mapper, DataContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
-            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ServiceResponse<List<GetPropertyDto>>> AddProperty(AddPropertyDto newProperty)

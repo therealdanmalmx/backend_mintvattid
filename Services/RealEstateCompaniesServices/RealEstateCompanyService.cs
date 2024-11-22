@@ -26,7 +26,7 @@ namespace backend.Services.RealEstateCompaniesServices
             var serviceResponse = new ServiceResponse<List<GetRealEstateCompanyDto>>();
             _db.RealEstateCompanies.Add(_mapper.Map<RealEstateCompany>(newRealEstateCompany));
             await _db.SaveChangesAsync();
-            serviceResponse.Data = await _db.RealEstateCompanies.Select(realEstateCompany => _mapper.Map<GetRealEstateCompanyDto>(realEstateCompany)).ToListAsync();
+            serviceResponse.Data = await _db.RealEstateCompanies.Select(r => _mapper.Map<GetRealEstateCompanyDto>(r)).ToListAsync();
 
             return serviceResponse;
         }
@@ -36,11 +36,11 @@ namespace backend.Services.RealEstateCompaniesServices
             var serviceResponse = new ServiceResponse<List<GetRealEstateCompanyDto>>();
             try
             {
-                RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstAsync(realEstateCompany => realEstateCompany.Id == id);
+                RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstAsync(r => r.Id == id);
                 _db.Remove(realEstateCompany);
                 await _db.SaveChangesAsync();
 
-                serviceResponse.Data = _db.RealEstateCompanies.Select(realEstateCompany => _mapper.Map<GetRealEstateCompanyDto>(realEstateCompany)).ToList();
+                serviceResponse.Data = _db.RealEstateCompanies.Select(r => _mapper.Map<GetRealEstateCompanyDto>(r)).ToList();
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace backend.Services.RealEstateCompaniesServices
 
             var dbRealEstateCompanies = await _db.RealEstateCompanies.ToListAsync();
 
-            serviceResponse.Data = dbRealEstateCompanies.Select(realEstateCompany => _mapper.Map<GetRealEstateCompanyDto>(realEstateCompany)).ToList();
+            serviceResponse.Data = dbRealEstateCompanies.Select(r => _mapper.Map<GetRealEstateCompanyDto>(r)).ToList();
 
             return serviceResponse;
 
@@ -66,7 +66,7 @@ namespace backend.Services.RealEstateCompaniesServices
         public async Task<ServiceResponse<GetRealEstateCompanyDto>> GetRealEstateCompanyById(Guid id)
         {
             var serviceResponse = new ServiceResponse<GetRealEstateCompanyDto>();
-            var dbRealEstateCompanies = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id.Equals(id));
+            var dbRealEstateCompanies = await _db.RealEstateCompanies.FirstOrDefaultAsync(r => r.Id.Equals(id));
             serviceResponse.Data = _mapper.Map<GetRealEstateCompanyDto>(dbRealEstateCompanies);
 
             return serviceResponse;
@@ -76,7 +76,7 @@ namespace backend.Services.RealEstateCompaniesServices
         {
             var serviceResponse = new ServiceResponse<GetRealEstateCompanyDto>();
 
-            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(realEstateCompany => realEstateCompany.Id.Equals(updateRealEstateCompany.Id));
+            RealEstateCompany realEstateCompany = await _db.RealEstateCompanies.FirstOrDefaultAsync(r => r.Id.Equals(updateRealEstateCompany.Id));
 
             try
             {
@@ -94,7 +94,7 @@ namespace backend.Services.RealEstateCompaniesServices
                 else
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = "Real Estate Company not found";
+                    serviceResponse.Message = "Fastighetsbolag hittades inte";
                 }
 
                 await _db.SaveChangesAsync();
