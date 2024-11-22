@@ -13,5 +13,8 @@ namespace backend.models
 
         public Guid? PropertyId { get; set; }
         public Property? Property { get; set; }
+
+        public Guid WashTimeId { get; set; }
+        public List<WashTime>? Washtimes { get; set; }
     }
 }

@@ -187,43 +187,41 @@ namespace backend.Services.PropertyServices
 
         public async Task<ServiceResponse<List<GetWashroomsPerPropertyDto>>> GetWashroomsPerProperty(Guid propertyId)
         {
+            var serviceResponse = new ServiceResponse<List<GetWashroomsPerPropertyDto>>();
+
+            try
             {
-                var serviceResponse = new ServiceResponse<List<GetWashroomsPerPropertyDto>>();
+                var property = await _db.Properties.Include(p => p.Washrooms).FirstOrDefaultAsync(p => p.Id == propertyId);
 
-                try
-                {
-                    var property = await _db.Properties.Include(p => p.Washrooms).FirstOrDefaultAsync(p => p.Id == propertyId);
-
-                    if (property == null)
-                    {
-                        serviceResponse.Success = false;
-                        serviceResponse.Message = "Fastigheten hittades inte";
-                        return serviceResponse;
-                    }
-
-                    var washroomsForProperty = await _db.Washrooms
-                        .Where(w => w.PropertyId == propertyId)
-                        .GroupBy(w => w.Property.PropertyName)
-                        .Select(group => new GetWashroomsPerPropertyDto
-                        {
-                            PropertyName = group.Key,
-                            WashRooms = group.Select(u => _mapper.Map<GetWashRoomsDto>(u)).ToList()
-                        })
-                        .ToListAsync();
-
-                    serviceResponse.Data = washroomsForProperty;
-
-
-                }
-                catch (Exception ex)
+                if (property == null)
                 {
                     serviceResponse.Success = false;
-                    serviceResponse.Message = ex.Message;
+                    serviceResponse.Message = "Fastigheten hittades inte";
+                    return serviceResponse;
                 }
 
+                var washroomsForProperty = await _db.Washrooms
+                    .Where(w => w.PropertyId == propertyId)
+                    .GroupBy(w => w.Property.PropertyName)
+                    .Select(group => new GetWashroomsPerPropertyDto
+                    {
+                        PropertyName = group.Key,
+                        WashRooms = group.Select(u => _mapper.Map<GetWashRoomsDto>(u)).ToList()
+                    })
+                    .ToListAsync();
 
-                return serviceResponse;
+                serviceResponse.Data = washroomsForProperty;
+
+
             }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+
+            return serviceResponse;
         }
     }
 }

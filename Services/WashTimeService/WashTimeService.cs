@@ -123,6 +123,7 @@ namespace backend.Services.WashTimeService
                 _db.Washtimes.Remove(dbWashtime);
                 await _db.SaveChangesAsync();
 
+
                 serviceResponse.Data = await _db.Washtimes.Select(w => _mapper.Map<GetWashTimesDto>(w)).ToListAsync();
 
             }

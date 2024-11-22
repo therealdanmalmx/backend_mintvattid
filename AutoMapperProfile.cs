@@ -41,6 +41,7 @@ namespace backend
 
             // WashTime
             CreateMap<WashTime, GetWashTimesDto>();
+            CreateMap<WashTime, GetWasTimesPerWashRoomDto>();
             CreateMap<AddWasTimesDto, WashTime>();
             CreateMap<UpdatedWashTimeDto, WashTime>();
 

@@ -8,10 +8,6 @@ namespace backend.Dtos.WashTime
     public class GetWashTimesDto
     {
         public Guid Id { get; set; } = Guid.Empty;
-        public string? Name { get; set; } = string.Empty;
-        public TimeSpan StartTime { get; set; } = TimeSpan.Zero;
-        public TimeSpan EndTime { get; set; } = TimeSpan.Zero;
-        public bool isBooked { get; set; } = false;
-        public Guid WashRoomId { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

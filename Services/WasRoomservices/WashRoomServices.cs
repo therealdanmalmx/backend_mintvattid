@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using backend.Data;
 using backend.Dtos.WashRoom;
+using backend.Dtos.WashTime;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.WasRoomservices
@@ -66,7 +67,7 @@ namespace backend.Services.WasRoomservices
 
         }
 
-        public async Task<ServiceResponse<List<GetWashRoomsDto>>> GetAllWashRooms()
+        public async Task<ServiceResponse<List<GetWashRoomsDto>>> GetWashRooms()
         {
             var serviceResponse = new ServiceResponse<List<GetWashRoomsDto>>();
 
@@ -88,6 +89,45 @@ namespace backend.Services.WasRoomservices
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
             }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetWasTimesPerWashRoomDto>>> GetWasTimesPerWashRoom(Guid washroomId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetWasTimesPerWashRoomDto>>();
+
+            try
+            {
+                var washroom = await _db.Washrooms.Include(p => p.Washtimes).FirstOrDefaultAsync(p => p.Id == washroomId);
+
+                if (washroom == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Tvättrum hittades inte";
+                    return serviceResponse;
+                }
+
+                var washTimesForWashroom = await _db.Washtimes
+                    .Where(w => w.WashRoomId == washroomId)
+                    .GroupBy(w => w.WashRoom.Name)
+                    .Select(group => new GetWasTimesPerWashRoomDto
+                    {
+                        WashRoomName = group.Key,
+                        Washtimes = group.Select(w => _mapper.Map<GetWashTimesDto>(w)).ToList()
+                    })
+                    .ToListAsync();
+
+                serviceResponse.Data = washTimesForWashroom;
+
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
 
             return serviceResponse;
         }
