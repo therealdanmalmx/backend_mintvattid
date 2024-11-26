@@ -25,6 +25,13 @@ namespace backend.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<ServiceResponse<List<GetWashRoomsDto>>>> GetWashRooms()
+        {
+            return Ok(await _washRoomServices.GetWashRooms());
+        }
+
         [HttpGet("GetAllWashTimes")]
         public async Task<ActionResult<ServiceResponse<GetWasTimesPerWashRoomDto>>> GetWasTimesPerWashRoom(Guid washroomId)
         {

@@ -9,7 +9,7 @@ namespace backend.Services.AuthService
     {
         Task<ServiceResponse<Guid>> RegisterUser(User user, string password);
         Task<ServiceResponse<string>> LoginUser(string username, string password);
-
         Task<bool> UserExists(string username);
+        Task<bool> UserEmailExists(string email);
     }
 }

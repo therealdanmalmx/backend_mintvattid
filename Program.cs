@@ -60,6 +60,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+var provider = builder.Services.BuildServiceProvider();
+var configuring = provider.GetRequiredService<IConfiguration>();
+builder.Services.AddCors(options =>
+{
+    var frontendURL = configuring.GetValue<string>("frontend_url");
+
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -70,6 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 

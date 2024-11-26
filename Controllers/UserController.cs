@@ -26,6 +26,7 @@ namespace backend.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserRegister(UserRegisterDto request)
         {

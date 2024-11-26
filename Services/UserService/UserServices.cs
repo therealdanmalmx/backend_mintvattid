@@ -49,11 +49,19 @@ namespace backend.Services.AuthService
         {
             ServiceResponse<Guid> serviceResponse = new ServiceResponse<Guid>();
 
+            if (await UserEmailExists(user.Email))
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Email exists";
+                return serviceResponse;
+            }
             if (await UserExists(user.UserName))
             {
                 serviceResponse.Success = false;
-                serviceResponse.Message = "En användare med det användarnamnet finns redan";
+                serviceResponse.Message = "Username exists";
+                return serviceResponse;
             }
+
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
@@ -70,6 +78,14 @@ namespace backend.Services.AuthService
         public async Task<bool> UserExists(string username)
         {
             if (await _db.Users.AnyAsync(user => user.UserName.ToLower().Equals(username.ToLower())))
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> UserEmailExists(string email)
+        {
+            if (await _db.Users.AnyAsync(user => user.Email.ToLower().Equals(email.ToLower())))
             {
                 return true;
             }
