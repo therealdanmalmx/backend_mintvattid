@@ -35,9 +35,10 @@ namespace backend.Controllers
                     ApartmentNumber = request.ApartmentNumber,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    UserName = request.Email,
                     Email = request.Email,
+                    UserName = string.IsNullOrWhiteSpace(request.UserName) ? request.Email : request.UserName,
                     PhoneNumber = request.PhoneNumber,
+                    PropertyId = request.PropertyId,
 
                 }, request.Password
             );
