@@ -9,8 +9,8 @@ namespace backend.Dtos.UserDto
     public class GetUserDto
     {
         public Guid Id { get; set; }
-        public string UserName { get; set; }
-        public string ApartmentNumber { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string ApartmentNumber { get; set; } = string.Empty;
 
     }
 }

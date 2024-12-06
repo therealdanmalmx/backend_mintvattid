@@ -14,13 +14,11 @@ namespace backend.models
         public string Email { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        [Required]
-        public byte[] PasswordHash { get; set; }
-        [Required]
-        public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
+        public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
         public UserRole Role { get; set; } = UserRole.User;
 
         public Guid? PropertyId { get; set; }
-        public Property Property { get; set; }
+        public Property? Property { get; set; }
     }
 }

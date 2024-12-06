@@ -72,7 +72,7 @@ namespace backend.Services.WashTimeService
 
             try
             {
-                WashTime washTime = await _db.Washtimes.FirstOrDefaultAsync(w => w.Id.Equals(washTimeId));
+                WashTime? washTime = await _db.Washtimes.FirstOrDefaultAsync(w => w.Id == washTimeId);
 
                 if (washTime != null)
                 {
@@ -80,11 +80,11 @@ namespace backend.Services.WashTimeService
                     {
                         washTime.Name = updatedWashTime.Name;
                     }
-                    if (updatedWashTime.StartTime != null)
+                    if (updatedWashTime.StartTime != TimeSpan.Zero)
                     {
                         washTime.StartTime = updatedWashTime.StartTime;
                     }
-                    if (updatedWashTime.EndTime != null)
+                    if (updatedWashTime.EndTime != TimeSpan.Zero)
                     {
                         washTime.EndTime = updatedWashTime.EndTime;
                     }

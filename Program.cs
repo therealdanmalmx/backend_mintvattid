@@ -71,7 +71,7 @@ var provider = builder.Services.BuildServiceProvider();
 var configuring = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddCors(options =>
 {
-    var frontendURL = configuring.GetValue<string>("frontend_url");
+    var frontendURL = configuring.GetValue<string>("frontend_url") ?? throw new InvalidOperationException("frontend_url is not configured");
 
     options.AddDefaultPolicy(builder =>
     {

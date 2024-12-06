@@ -40,7 +40,10 @@ namespace backend.Services.PropertyServices
             }
 
             var property = _mapper.Map<Property>(newProperty);
-            property.UserId = Guid.Parse(userId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                property.UserId = Guid.Parse(userId);
+            }
 
             _db.Properties.Add(property);
             await _db.SaveChangesAsync();
