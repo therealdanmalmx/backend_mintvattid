@@ -67,15 +67,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-var provider = builder.Services.BuildServiceProvider();
-var configuring = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddCors(options =>
 {
-    var frontendURL = configuring.GetValue<string>("frontend_url") ?? throw new InvalidOperationException("frontend_url is not configured");
+    var frontend_url = builder.Configuration.GetValue<string>("frontend_url") ?? throw new InvalidOperationException("frontend_url is not configured");
 
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
+        builder.WithOrigins(frontend_url).AllowAnyMethod().AllowAnyHeader();
     });
 });
 
