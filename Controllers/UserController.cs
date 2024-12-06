@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-    [Authorize]
+
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -26,7 +26,6 @@ namespace backend.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
         [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<Guid>>> UserRegister(UserRegisterDto request)
         {
