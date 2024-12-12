@@ -39,7 +39,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -66,11 +66,12 @@ jobs:
 
   deploy:
     permissions:
-      contents: none
-    runs-on: ubuntu-latest
+      contents: read
+      packages: write
+    runs-on: windows-latest
     needs: build
     environment:
-      name: 'Development'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
