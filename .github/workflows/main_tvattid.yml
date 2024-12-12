@@ -27,7 +27,7 @@
 name: Build and deploy a container to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: tvattid # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: tvattid-dncfatcbbnhtc3hd.northeurope-01.azurewebsites.net # set this to the name of your Azure Web App
 
 on:
   push:
@@ -67,10 +67,10 @@ jobs:
   deploy:
     permissions:
       contents: none
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "Production"
+      name: "Development"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
